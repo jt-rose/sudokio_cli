@@ -1,0 +1,23 @@
+{
+  "name": "sudokio_algorithms",
+  "version": "1.0.0",
+  "main": "main.js",
+  "license": "MIT",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "esm": "^3.2.25",
+    "jest": "^26.0.1",
+    "jest-esm-transformer": "^1.0.0",
+    "prompt": "^1.0.0",
+    "ramda": "^0.27.0"
+  },
+  "scripts": {
+    "start": "node -r esm app.js",
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      ".js": "jest-esm-transformer"
+    }
+  }
+}
