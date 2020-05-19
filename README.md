@@ -1,5 +1,5 @@
 # Sudokio Solver Algorithms
-Sudokio is a website-in-progress that analyzes sudoku puzzles using human strategies (not recursive backtracking, the traditional CS method for solving sudoku) and provides hints and teaches the user how to complete various puzzles. The Solver Algorithms take a given puzzle and attempt to make progress step by step using a sequence of increasingly complex strategies. The goal is to record what strategies were used where, rank puzzle dificulty, and provide teaching tools to users.
+Sudokio is a website-in-progress that analyzes sudoku puzzles using human strategies (not recursive backtracking, the traditional CS method for solving sudoku) and provides hints and teaches the user how to complete various puzzles. The Solver Algorithms take a given puzzle and attempt to make progress step by step using a sequence of increasingly complex strategies. The goal is to record what strategies were used where, rank puzzle difficulty, and provide teaching tools to users.
 
 The Solver Algorithms were developed with a functional programming style and are now complete and fully tested using Jest/Chai. The code structure is modeled after modular React patterns.
 
