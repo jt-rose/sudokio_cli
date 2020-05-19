@@ -1,9 +1,9 @@
-## Sudokio Solver Algorithms
+# Sudokio Solver Algorithms
 Sudokio is a website-in-progress that analyzes sudoku puzzles using human strategies (not recursive backtracking, the traditional CS method for solving sudoku) and provides hints and teaches the user how to complete various puzzles. The Solver Algorithms take a given puzzle and attempt to make progress step by step using a sequence of increasingly complex strategies. The goal is to record what strategies were used where, rank puzzle dificulty, and provide teaching tools to users.
 
 The Solver Algorithms were developed with a functional programming style and are now complete and fully tested using Jest/Chai. The code structure is modeled after modular React patterns.
 
-##### Dependencies
+#### Dependencies
 * [node.js] - for running the CLI
 * [ramda] - functional programming tools
 * [esm] - allow for import syntax in node
@@ -13,7 +13,7 @@ The Solver Algorithms were developed with a functional programming style and are
 * [jest-esm-transformer] - esm compatibility with Jest
 
 
-##### Using the Solver Algorithm
+#### Using the Solver Algorithm
 The solver algorithm is meant to be used through a UI on the Sudokio website, which is still in progress. However, a basic version of the solver can be used from the command line with the following steps:
 
 1. Download the files from github
@@ -23,7 +23,7 @@ The solver algorithm is meant to be used through a UI on the Sudokio website, wh
 
 This program will first confirm the puzzle is valid (and return an error message if it’s not) before attempting to solve it using a series of human strategies and returning the solved/ updated puzzle along with the step-by-step solutions.
 
-##### Future Plans
+#### Future Plans
 The next major phases are to: 
 * Build the puzzle database, containing info on various puzzles, their solutions, strategies used, and difficulty ranking
 * Build the user database, storing user info on puzzles solved, puzzles saved, scores, strategy tests cleared, etc.
@@ -31,8 +31,8 @@ The next major phases are to:
 
 I may also implement some more minor updates to the solver algorithms, such as replacing the ramda dependency with homegrown helper functions.
 
-### Data Structure - How it all works
-##### Representing the Sudoku Grid
+## Data Structure - How it all works
+#### Representing the Sudoku Grid
 Sudoku puzzles can be initially submitted as a single 81 character string (called the gridString in the codebase) with unanswered cells represented by the number 0:
 
 `"530070000600195000098000060800060003400803001700020006060000280000419005000080079"`
@@ -54,7 +54,7 @@ Then the middle cell could only be a 5, and on the next turn would be solved and
 This structure is important because several strategies work by narrowing possible answers down and then using another strategy to solve what is left.  That would be represented by the following:
 `[1,2,3,4]` => `[1,2,4]` => `2`
 
-##### Calculating Grid Relationships
+#### Calculating Grid Relationships
 The “cellIndex”, or array index of each cell (using CS numbering 0-80), can be provided to a number of functions that return which cells are in the same row, column, or box.
 
 The command `getRow(5)` will return the index numbers of the first row: `[0,1,2,3,4,5,6,7,8]`
@@ -77,7 +77,7 @@ These functions are used frequently within the strategies to focus on valid data
 
 
 
-##### Confirming Grid is Valid
+#### Confirming Grid is Valid
 Before running a test on a submitted gridString, the `checkValid()` function (or `checkAndSolve()`, which incorporates it)  is run to confirm the grid is valid before applying any strategies. An error messages is returned when not valid.
 The `checkValid()` function is composed of many smaller functions, that check for a number of obvious issues with the submitted gridString, such as:
 * Incorrect data type (not a string)
@@ -95,7 +95,7 @@ This uses recursive backtracking to answer the puzzle or confirm it has an error
 
 In the future, an additional check will be added to see if the submitted puzzle is stored in the Sudokio database. The database is still being developed, so this will be added later.
 
-##### Testing Grid Against Various Strategies
+#### Testing Grid Against Various Strategies
 The heart of Sudokio is the various strategies it can run against the submitted puzzle. At present, the following strategies are attempted across all relevant parts of the puzzle, in order:
 * singleOption
 * singleParam
@@ -113,19 +113,19 @@ These functions do not directly update the puzzle, but instead return a solution
 
 A standard list of strategies will be applied, but this can be adjusted using the `limitStratsTo()` function, so if for example you want to check only against the first three strategies, you can do that. This is especially helpful in structuring chains, which can be easily adjusted to apply any number of other strategies, including further chains!
 
-##### Filtering and Applying the Best Answer Each Turn
+#### Filtering and Applying the Best Answer Each Turn
 When applying a strategy across the full sudoku puzzle, we may find multiple “hits” where the strategy can be applied. To prioritize the best answers (those that are easiest to find while providing the most benefit), the `filterBest()` function is used to then pick the best single answer or group of answers (when appropriate, such as for singleOption). For example, a chain might be found that only requires one or two rounds of updates, and this would be preferable to using a chain with several rounds. We will then rerun the strategies to see if applying the first solution opens up simpler answers that can avoid the more complex chain altogether.
 
 The `applySolution()` function mentioned in the last section is used after filtering the best present solution. This function will update the sudoku puzzle, solving and updating answer options for each relevant cell.
 
 A `sortBest()` function is also available to sort answers according to filterBest while still providing them all. This will be used on the site to show all currently possible applications of a particular strategy, from most recommended to least. 
 
-##### Testing Grid to Completion
+#### Testing Grid to Completion
 The `solveWithStandardOptions()` function is used recursively to find the best current solution, apply it to the puzzle, and then pass the updated puzzle and solution list to the next recursive loop, until either the puzzle is fully solved (with all solution data carried through), or return an incomplete puzzle with the most updates possible.
 
 This function is bundled with the `checkValid()` function to create the `checkAndSolve()` function. This final function abstracts away everything and allows the user to simply submit a gridString and get a result.
 
-##### Flexible Solver Algorithms
+#### Flexible Solver Algorithms
 The base function for the nakedPairing, hiddenPairing, fish, and chain strategies have all been designed to take advantage of currying to adjust them as needed. For example, the `nakedPairing()` function has been used to create the `nakedPairs()`, `nakedTriples()`, and `nakedQuads()` functions; however, we could easily use it to create a function that checks for sets of 5 or more if needed. In the case of the chains function, we have only set it up to check for basic solutions using the `singleOption()` function, but this could easily be scaled to look for increasingly complex strategies (including even other chains). 
 
 [node.js]: <http://nodejs.org>
