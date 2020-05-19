@@ -63,12 +63,12 @@ const followUpOptions = currentAnswer => {
             case "strategies":
                 currentAnswer.solutions.map( sol => console.log(sol));
                 console.log("");
-                testUserGrid()
+                followUpOptions(currentAnswer);
                 break;
             case "steps":
                 displayAllSolutions(currentAnswer);
                 console.log("");
-                testUserGrid()
+                followUpOptions(currentAnswer);
                 break;
             case "next":
                 testUserGrid();
@@ -132,7 +132,7 @@ const testUserGrid = () => {
 
             console.log("");
             console.log(chalk.underline(`  ${currentAnswer.solved ? "Finished" : "Updated"} Puzzle  `));
-            displayGrid(currentAnswer.updatedGrid.map((x, i) => currentAnswer.gridString[i] === "0" ? chalk.green(JSON.stringify(x)) : x));
+            displayGrid(currentAnswer.updatedGrid);
             console.log("");
             followUpOptions(currentAnswer);
         }
