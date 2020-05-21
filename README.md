@@ -1,5 +1,7 @@
 # Sudokio Solver Algorithms
-Sudokio is a website-in-progress that analyzes sudoku puzzles using human strategies (not recursive backtracking, the traditional CS method for solving sudoku) and provides hints and teaches the user how to complete various puzzles. The Solver Algorithms take a given puzzle and attempt to make progress step by step using a sequence of increasingly complex strategies. The goal is to record what strategies were used where, rank puzzle difficulty, and provide teaching tools to users.
+Solve Sudoku puzzles using human strategies, while providing a full analysis and detailed walkthrough for users.
+
+Sudokio is a website-in-progress that analyzes Sudoku puzzles using human strategies and provides hints and teaches the user how to complete various puzzles. The Solver Algorithms take a given puzzle and attempt to make progress step by step using a sequence of increasingly complex strategies. The goal is to record what strategies were used where, rank puzzle difficulty, and provide teaching tools to users.
 
 The Solver Algorithms were developed with a functional programming style and are now complete and fully tested using Jest/Chai. The code structure is modeled after modular React patterns.
 
@@ -10,7 +12,7 @@ The Solver Algorithms were developed with a functional programming style and are
 * [prompt] - better CLI presentation
 * [jest]- testing suite
 * [chai] - advanced assertion library
-* [jest-esm-transformer] - esm compatibility with Jest
+* [jest-esm-transformer] - esm compatibility with jest
 
 
 ### Using the Solver Algorithm
@@ -31,7 +33,14 @@ The next major phases are to:
 
 I may also implement some more minor updates to the solver algorithms, such as replacing the ramda dependency with homegrown helper functions.
 
-## Data Structure - How it all works
+## How it works - At A Glance
+Solving Sudoku puzzles with programming is traditionally done using recursive backtracking. This works perfectly well for finding an answer, but it does not model how humans solve these puzzles and has limited use in providing hints or teaching strategies to users. The Sudokio program instead implements a series of human strategies and stores data on them, allowing it to solve the puzzle in a "human" way and provide lots of rich detail about each puzzle and how to best solve them.
+
+Sudoku strategies can be applied to a puzzle via functions that return an object with data on what was solved. A full list of strategy functions is stored and applied to a puzzle, attempting strategies from easiest to most difficult and stopping at the first positive result. If more than one possible answers are currently found with the same strategy then the options are filtered down to the preferred one, and the strategy is then applied to the puzzle, updating it as well as storing data on what strategies have been used so far. This process continues recursively until no further progress can be made, either because the puzzle has been solved or because none of the strategies can currently provide answers. At that point, the updated/ solved puzzle is provided along with a full breakdown of steps taken. 
+
+This data can be used to walk through a puzzle, provide the next best answer, rank the difficulty of a puzzle based on strategies needed, and store example puzzles for use teaching particular strategies. The strategy data can also be used with the Sudokio website to visualize how the strategy works as a teaching tool.
+
+## How it works - In-Depth
 ### Representing the Sudoku Grid
 Sudoku puzzles can be initially submitted as a single 81 character string (called the gridString in the codebase) with unanswered cells represented by the number 0:
 
@@ -127,6 +136,17 @@ This function is bundled with the `checkValid()` function to create the `checkAn
 
 ### Flexible Solver Algorithms
 The base function for the nakedPairing, hiddenPairing, fish, and chain strategies have all been designed to take advantage of currying to adjust them as needed. For example, the `nakedPairing()` function has been used to create the `nakedPairs()`, `nakedTriples()`, and `nakedQuads()` functions; however, we could easily use it to create a function that checks for sets of 5 or more if needed. In the case of the chains function, we have only set it up to check for basic solutions using the `singleOption()` function, but this could easily be scaled to look for increasingly complex strategies (including even other chains). 
+
+## Data Flow
+1. check puzzle grid is valid
+1. format grid
+1. apply strategy cycle
+1. return first strategy result(s) found
+1. reduce to best current result when multiple found
+1. apply current solution to update the grid
+1. pass updated grid and updated solution list to next recursive cycle
+1. continue until grid is solved or no further updates possible
+1. return solved/ updated grid along with complete solution list
 
 [node.js]: <http://nodejs.org>
 [ramda]: <https://ramdajs.com>
