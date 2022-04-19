@@ -7,7 +7,7 @@ import {
   hiddenQuadGridString,
   XWingGridString1,
   swordfishGridString1,
-  jellyfishGridString1,
+  jellyfishGridString2,
   xChainGridString,
 } from "./tests/gridSamplesForTesting";
 import displayAllSolutions from "./solvers/solutionDescriptions";
@@ -113,7 +113,7 @@ const testUserGrid = () => {
         currentAnswer = checkAndSolve(swordfishGridString1);
         break;
       case "jellyfish":
-        currentAnswer = checkAndSolve(jellyfishGridString1);
+        currentAnswer = checkAndSolve(jellyfishGridString2);
         break;
       case "x-chain":
         currentAnswer = checkAndSolve(xChainGridString);
